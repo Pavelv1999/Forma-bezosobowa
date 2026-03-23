@@ -7,539 +7,119 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0c0a;
-    --bg2: #161310;
-    --bg3: #1e1a16;
-    --gold: #c9a84c;
-    --gold2: #e8c97a;
-    --cream: #f2ead8;
-    --muted: #7a6e60;
-    --red: #c0392b;
-    --green: #2e7d52;
-    --border: rgba(201,168,76,0.2);
+    --bg: #0e0c0a; --bg2: #161310; --bg3: #1e1a16;
+    --gold: #c9a84c; --gold2: #e8c97a; --cream: #f2ead8;
+    --muted: #7a6e60; --border: rgba(201,168,76,0.2);
     --font-display: 'Playfair Display', serif;
     --font-body: 'Crimson Pro', serif;
     --font-mono: 'DM Mono', monospace;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--cream);
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ---- NOISE OVERLAY ---- */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
-  }
-
-  /* ---- HERO ---- */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 4rem 2rem;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .hero-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    pointer-events: none;
-    animation: rotate-slow 40s linear infinite;
-  }
+  body { background: var(--bg); color: var(--cream); font-family: var(--font-body); font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 4rem 2rem; text-align: center; overflow: hidden; }
+  .hero-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); pointer-events: none; animation: rotate-slow 40s linear infinite; }
   .hero-ring:nth-child(1) { width: 600px; height: 600px; animation-duration: 60s; }
   .hero-ring:nth-child(2) { width: 900px; height: 900px; animation-duration: 90s; animation-direction: reverse; }
   .hero-ring:nth-child(3) { width: 1200px; height: 1200px; animation-duration: 120s; border-style: dashed; }
-
   @keyframes rotate-slow { to { transform: rotate(360deg); } }
-
-  .hero-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fade-up 0.8s 0.3s ease forwards;
-  }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 900;
-    line-height: 1.05;
-    color: var(--cream);
-    margin-bottom: 0.5rem;
-    opacity: 0;
-    animation: fade-up 0.8s 0.5s ease forwards;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    font-family: var(--font-body);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--muted);
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fade-up 0.8s 0.7s ease forwards;
-  }
-
-  .hero-rule {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1.5rem 2.5rem;
-    max-width: 620px;
-    font-size: 1rem;
-    line-height: 2;
-    opacity: 0;
-    animation: fade-up 0.8s 0.9s ease forwards;
-  }
-
-  .hero-rule .rule-line {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .hero-rule .rule-line:last-child { border-bottom: none; }
-  .rule-tense {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-transform: uppercase;
-    min-width: 110px;
-  }
-  .rule-form {
-    font-size: 1.1rem;
-    color: var(--cream);
-  }
-  .rule-arrow { color: var(--muted); font-size: 0.8rem; }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-    animation: bounce 2s ease infinite;
-    opacity: 0;
-    animation: fade-up 0.8s 1.5s ease forwards, bounce 2s 2.3s ease infinite;
-  }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-6px)} }
-
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ---- NAV ---- */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(14,12,10,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    padding: 0 2rem;
-  }
-  nav a {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 1.1rem 1.5rem;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-  }
+  .hero-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fade-up 0.8s 0.3s ease forwards; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: 1.05; color: var(--cream); margin-bottom: 0.5rem; opacity: 0; animation: fade-up 0.8s 0.5s ease forwards; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-style: italic; font-size: 1.2rem; color: var(--muted); margin-bottom: 3rem; opacity: 0; animation: fade-up 0.8s 0.7s ease forwards; }
+  .hero-rule { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem 2.5rem; max-width: 620px; font-size: 1rem; line-height: 2; opacity: 0; animation: fade-up 0.8s 0.9s ease forwards; }
+  .hero-rule .rule-line { display: flex; align-items: center; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .hero-rule .rule-line:last-child { border-bottom: none; }
+  .rule-tense { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; min-width: 130px; }
+  .rule-form { font-size: 1.1rem; color: var(--cream); }
+  .rule-arrow { color: var(--muted); font-size: 0.8rem; }
+  .scroll-hint { position: absolute; bottom: 2rem; left: 50%; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; opacity: 0; animation: fade-up 0.8s 1.5s ease forwards, bounce 2s 2.3s ease infinite; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(14,12,10,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; justify-content: center; padding: 0 2rem; }
+  nav a { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 1.1rem 1.5rem; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
   nav a:hover, nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-  /* ---- SECTIONS ---- */
-  section {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-  }
-
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-
-  h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    color: var(--cream);
-    margin-bottom: 2rem;
-    line-height: 1.2;
-  }
-
+  section { max-width: 900px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
+  h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--cream); margin-bottom: 2rem; line-height: 1.2; }
   h2 em { font-style: italic; color: var(--gold); }
-
-  /* ---- RULE CARDS ---- */
-  .rule-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
   @media(max-width:600px){ .rule-grid{ grid-template-columns:1fr; } }
-
-  .rule-card {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
+  .rule-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 2rem; position: relative; overflow: hidden; transition: border-color 0.3s; }
   .rule-card:hover { border-color: var(--gold); }
-  .rule-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-  }
-
-  .rc-title {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  .rc-formula {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    font-style: italic;
-    color: var(--cream);
-    margin-bottom: 1rem;
-    padding: 0.75rem 1rem;
-    background: rgba(201,168,76,0.07);
-    border-left: 3px solid var(--gold);
-    border-radius: 0 4px 4px 0;
-  }
-
+  .rule-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
+  .rc-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .rc-formula { font-family: var(--font-display); font-size: 1.3rem; font-style: italic; color: var(--cream); margin-bottom: 1rem; padding: 0.75rem 1rem; background: rgba(201,168,76,0.07); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; }
   .rc-examples { list-style: none; }
-  .rc-examples li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-  }
+  .rc-examples li { padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; display: flex; align-items: baseline; gap: 0.75rem; }
   .rc-examples li:last-child { border-bottom: none; }
-  .rc-verb {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--gold2);
-    min-width: 120px;
-  }
+  .rc-verb { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold2); min-width: 120px; }
   .rc-sent { color: var(--cream); }
   .rc-sent em { font-style: italic; color: var(--muted); font-size: 0.85rem; }
-
-  /* ---- TABLE ---- */
-  .conj-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    font-size: 0.95rem;
-  }
-  .conj-table th {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .conj-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    vertical-align: top;
-  }
+  .conj-table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.95rem; }
+  .conj-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  .conj-table td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
   .conj-table tr:hover td { background: rgba(201,168,76,0.04); }
   .conj-table .inf { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); }
-  .conj-table .pres { color: var(--gold2); font-weight: 400; }
+  .conj-table .pres { color: var(--gold2); }
   .conj-table .past { color: var(--cream); font-style: italic; }
   .conj-table .meaning { font-size: 0.85rem; color: var(--muted); font-style: italic; }
-
-  /* ---- EXAMPLES SECTION ---- */
   .example-list { display: flex; flex-direction: column; gap: 1rem; }
-  .example-card {
-    background: var(--bg2);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 6px;
-    padding: 1.5rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    transition: border-color 0.3s, transform 0.3s;
-    cursor: default;
-  }
+  .example-card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; transition: border-color 0.3s, transform 0.3s; }
   .example-card:hover { border-color: var(--border); transform: translateX(6px); }
   @media(max-width:600px){ .example-card{ grid-template-columns:1fr; } }
   .ex-now { font-size: 0.9rem; color: var(--muted); font-style: italic; }
-  .ex-then {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    color: var(--cream);
-  }
+  .ex-then { font-family: var(--font-display); font-size: 1.1rem; color: var(--cream); }
   .ex-then span { color: var(--gold); }
-  .ex-divider {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-  }
-
-  /* ---- QUIZ ---- */
+  .ex-divider { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.3rem; }
   .quiz-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
-
-  .quiz-card {
-    background: var(--bg3);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 6px;
-    padding: 1.75rem 2rem;
-    transition: border-color 0.3s;
-  }
+  .quiz-card { background: var(--bg3); border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 1.75rem 2rem; transition: border-color 0.3s; }
   .quiz-card.correct { border-color: #2e7d52 !important; }
-  .quiz-card.wrong   { border-color: #c0392b !important; }
-
-  .quiz-num {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-  .quiz-q {
-    font-size: 1.05rem;
-    color: var(--cream);
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-  }
-  .quiz-hint {
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    padding: 2px 8px;
-    border-radius: 3px;
-    margin-bottom: 1rem;
-  }
-
+  .quiz-card.wrong { border-color: #c0392b !important; }
+  .quiz-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.5rem; }
+  .quiz-q { font-size: 1.05rem; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.6; }
+  .quiz-hint { display: inline-block; font-family: var(--font-mono); font-size: 11px; color: var(--gold); background: rgba(201,168,76,0.1); padding: 2px 8px; border-radius: 3px; margin-bottom: 1rem; }
   .quiz-input-row { display: flex; gap: 10px; align-items: center; }
-  .quiz-input-row input {
-    flex: 1;
-    background: var(--bg2);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 4px;
-    padding: 0.65rem 1rem;
-    color: var(--cream);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .quiz-input-row input { flex: 1; background: var(--bg2); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 0.65rem 1rem; color: var(--cream); font-family: var(--font-body); font-size: 1rem; outline: none; transition: border-color 0.2s; }
   .quiz-input-row input:focus { border-color: var(--gold); }
   .quiz-input-row input:disabled { opacity: 0.6; }
-
-  .quiz-btn {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 0.65rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    white-space: nowrap;
-  }
+  .quiz-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 0.65rem 1.2rem; border-radius: 4px; cursor: pointer; transition: background 0.2s, color 0.2s; white-space: nowrap; }
   .quiz-btn:hover { background: var(--gold); color: var(--bg); }
-
-  .quiz-fb {
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
-    padding: 0.6rem 0.9rem;
-    border-radius: 4px;
-    display: none;
-    font-style: italic;
-  }
+  .quiz-fb { margin-top: 0.75rem; font-size: 0.9rem; padding: 0.6rem 0.9rem; border-radius: 4px; display: none; font-style: italic; }
   .quiz-fb.ok { background: rgba(46,125,82,0.15); color: #6fcf97; display: block; }
   .quiz-fb.no { background: rgba(192,57,43,0.15); color: #e07070; display: block; }
-
-  .quiz-score-box {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1.5rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
+  .quiz-score-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
   .quiz-score-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
   .quiz-score-num { font-family: var(--font-display); font-size: 2rem; color: var(--gold); }
-  .reset-btn {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--muted);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
+  .reset-btn { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
   .reset-btn:hover { border-color: var(--muted); color: var(--cream); }
-
-  /* ---- TABS ---- */
-  .tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2.5rem;
-    overflow-x: auto;
-  }
-  .tab-btn {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--muted);
-    padding: 0.9rem 1.5rem;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    white-space: nowrap;
-  }
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; overflow-x: auto; }
+  .tab-btn { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--muted); padding: 0.9rem 1.5rem; cursor: pointer; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
   .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; }
-
-  /* ---- DIVIDER ---- */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  /* ---- FOOTER ---- */
-  footer {
-    text-align: center;
-    padding: 3rem 2rem;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    border-top: 1px solid var(--border);
-  }
-
-  /* ---- SCROLL REVEAL ---- */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .divider { border: none; border-top: 1px solid var(--border); max-width: 900px; margin: 0 auto; }
+  footer { text-align: center; padding: 3rem 2rem; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; border-top: 1px solid var(--border); }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero" id="home">
   <div class="hero-ring"></div>
   <div class="hero-ring"></div>
   <div class="hero-ring"></div>
-
   <div class="hero-label">Польская грамматика</div>
   <h1>Безличная<br><em>форма</em></h1>
   <p class="hero-sub">Как говорить о действиях, не называя того, кто их совершает</p>
-
   <div class="hero-rule">
-    <div class="rule-line">
-      <span class="rule-tense">Настоящее время</span>
-      <span class="rule-arrow">→</span>
-      <span class="rule-form">3-е лицо ед.ч. + <strong>się</strong></span>
-    </div>
-    <div class="rule-line">
-      <span class="rule-tense" style="color:#e8c97a">Прошедшее время</span>
-      <span class="rule-arrow">→</span>
-      <span class="rule-form">форма «оно» <strong>(–ło) + się</strong></span>
-    </div>
-    <div class="rule-line">
-      <span class="rule-tense" style="color:#aaa">Подлежащее</span>
-      <span class="rule-arrow">→</span>
-      <span class="rule-form" style="color:#7a6e60">отсутствует — «się» неопределённое</span>
-    </div>
+    <div class="rule-line"><span class="rule-tense">Настоящее время</span><span class="rule-arrow">→</span><span class="rule-form">3-е лицо ед.ч. + <strong>się</strong></span></div>
+    <div class="rule-line"><span class="rule-tense" style="color:#e8c97a">Прошедшее время</span><span class="rule-arrow">→</span><span class="rule-form">форма «оно» <strong>(–ło) + się</strong></span></div>
+    <div class="rule-line"><span class="rule-tense" style="color:#aaa">Подлежащее</span><span class="rule-arrow">→</span><span class="rule-form" style="color:#7a6e60">отсутствует — «się» неопределённое</span></div>
   </div>
-
   <div class="scroll-hint">↓ листать вниз</div>
 </div>
 
-<!-- NAV -->
 <nav id="main-nav">
   <a href="#regula" class="nav-link">Правило</a>
   <a href="#koniugacja" class="nav-link">Спряжение</a>
@@ -547,22 +127,19 @@
   <a href="#cwiczenia" class="nav-link">Упражнения</a>
 </nav>
 
-<!-- REGUŁA -->
 <section id="regula">
   <div class="reveal">
     <div class="section-label">01 — Правило</div>
     <h2>Как образовать<br><em>безличную форму?</em></h2>
   </div>
-
   <div class="rule-card reveal" style="margin-bottom:1.5rem">
     <div class="rc-title">Что такое безличная форма?</div>
     <p style="color:var(--muted);font-size:0.95rem;line-height:1.9">
       Безличная форма — это способ сказать <em style="color:var(--cream)">«делали», «ходили», «говорили»</em>, не называя конкретного человека.<br>
-      В русском это неопределённо-личные предложения: <em style="color:var(--cream)">«Раньше писали письма»</em>, <em style="color:var(--cream)">«В магазине платили наличными»</em>.<br><br>
+      В русском — неопределённо-личные предложения: <em style="color:var(--cream)">«Раньше писали письма»</em>, <em style="color:var(--cream)">«В магазине платили наличными»</em>.<br><br>
       В польском для этого используется частица <strong style="color:var(--gold)">się</strong> при особой форме глагола. Подлежащего нет — кто именно совершал действие, неважно или неизвестно.
     </p>
   </div>
-
   <div class="rule-grid reveal">
     <div class="rule-card">
       <div class="rc-title">Настоящее время</div>
@@ -589,90 +166,63 @@
       </ul>
     </div>
   </div>
-
   <div class="rule-card reveal" style="margin-bottom:1.5rem">
     <div class="rc-title">Почему именно форма «оно»?</div>
     <p style="color:var(--muted);font-size:0.95rem;line-height:1.9">
       В польском прошедшем времени глагол меняется по родам: <em style="color:var(--cream)">on szedł / ona szła / ono szło</em>.<br>
-      В безличной форме нет конкретного исполнителя — ни он, ни она, ни они. Польский язык использует <strong style="color:var(--gold)">средний род («оно»)</strong> как нейтральную форму без указания на пол и число.
-      <br><br>
-      <strong style="color:var(--cream)">On szedł</strong> &nbsp;→&nbsp; <em style="color:var(--gold)">szło się</em> &nbsp;&nbsp;|&nbsp;&nbsp;
-      <strong style="color:var(--cream)">Ona pisała</strong> &nbsp;→&nbsp; <em style="color:var(--gold)">pisało się</em> &nbsp;&nbsp;|&nbsp;&nbsp;
-      <strong style="color:var(--cream)">Oni jedli</strong> &nbsp;→&nbsp; <em style="color:var(--gold)">jadło się</em>
+      Безличная форма использует <strong style="color:var(--gold)">средний род («оно»)</strong> — нет конкретного исполнителя, ни он, ни она, ни они.<br><br>
+      <strong style="color:var(--cream)">On szedł</strong> → <em style="color:var(--gold)">szło się</em> &nbsp;|&nbsp;
+      <strong style="color:var(--cream)">Ona pisała</strong> → <em style="color:var(--gold)">pisało się</em> &nbsp;|&nbsp;
+      <strong style="color:var(--cream)">Oni jedli</strong> → <em style="color:var(--gold)">jadło się</em>
     </p>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- KONIUGACJA -->
 <section id="koniugacja">
   <div class="reveal">
     <div class="section-label">02 — Спряжение</div>
     <h2>Таблица<br><em>важнейших глаголов</em></h2>
   </div>
-
   <table class="conj-table reveal">
-    <thead>
-      <tr>
-        <th>Инфинитив</th>
-        <th>Настоящее время</th>
-        <th>Прошедшее время</th>
-        <th>Перевод</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Инфинитив</th><th>Настоящее время</th><th>Прошедшее время</th><th>Перевод</th></tr></thead>
     <tbody id="conj-body"></tbody>
   </table>
 </section>
 
 <hr class="divider">
 
-<!-- PRZYKŁADY -->
 <section id="przyklady">
   <div class="reveal">
     <div class="section-label">03 — Контекст</div>
     <h2>Возвращение<br><em>в прошлое</em></h2>
   </div>
-
   <div class="example-list reveal" id="example-list"></div>
 </section>
 
 <hr class="divider">
 
-<!-- ĆWICZENIA -->
 <section id="cwiczenia">
   <div class="reveal">
     <div class="section-label">04 — Практика</div>
     <h2>Интерактивные<br><em>упражнения</em></h2>
   </div>
-
   <div class="tabs reveal">
     <button class="tab-btn active" onclick="switchTab('t1',this)">Вставь форму</button>
     <button class="tab-btn" onclick="switchTab('t2',this)">Переведи</button>
     <button class="tab-btn" onclick="switchTab('t3',this)">2050 → 2020</button>
   </div>
-
   <div id="t1" class="tab-pane active">
-    <div class="quiz-score-box">
-      <div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s1">0 / 7</div></div>
-      <button class="reset-btn" onclick="resetQuiz(1)">Сначала</button>
-    </div>
+    <div class="quiz-score-box"><div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s1">0 / 7</div></div><button class="reset-btn" onclick="resetQuiz(1)">Сначала</button></div>
     <div class="quiz-wrap" id="q1"></div>
   </div>
-
   <div id="t2" class="tab-pane">
-    <div class="quiz-score-box">
-      <div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s2">0 / 6</div></div>
-      <button class="reset-btn" onclick="resetQuiz(2)">Сначала</button>
-    </div>
+    <div class="quiz-score-box"><div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s2">0 / 6</div></div><button class="reset-btn" onclick="resetQuiz(2)">Сначала</button></div>
     <div class="quiz-wrap" id="q2"></div>
   </div>
-
   <div id="t3" class="tab-pane">
-    <div class="quiz-score-box">
-      <div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s3">0 / 6</div></div>
-      <button class="reset-btn" onclick="resetQuiz(3)">Сначала</button>
-    </div>
+    <div class="quiz-score-box"><div><div class="quiz-score-label">Результат</div><div class="quiz-score-num" id="s3">0 / 6</div></div><button class="reset-btn" onclick="resetQuiz(3)">Сначала</button></div>
     <div class="quiz-wrap" id="q3"></div>
   </div>
 </section>
@@ -687,22 +237,10 @@
   <div class="reveal">
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2rem;max-width:560px;">
       <div style="display:flex;gap:1rem;margin-bottom:1.5rem;">
-        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 1</div>
-          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s1">0 / 7</div>
-        </div>
-        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 2</div>
-          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s2">0 / 6</div>
-        </div>
-        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;">
-          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 3</div>
-          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s3">0 / 6</div>
-        </div>
-        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;border:1px solid rgba(201,168,76,0.35);">
-          <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Итого</div>
-          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold2);" id="disp-total">0 / 19</div>
-        </div>
+        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 1</div><div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s1">0 / 7</div></div>
+        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 2</div><div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s2">0 / 6</div></div>
+        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Упр. 3</div><div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold);" id="disp-s3">0 / 6</div></div>
+        <div style="flex:1;background:var(--bg2);border-radius:6px;padding:1rem;text-align:center;border:1px solid rgba(201,168,76,0.35);"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem;">Итого</div><div style="font-family:var(--font-display);font-size:1.5rem;color:var(--gold2);" id="disp-total">0 / 19</div></div>
       </div>
       <div style="margin-bottom:1rem;">
         <label style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:0.5rem;">Твоё имя</label>
@@ -716,119 +254,73 @@
         Отправить результаты учителю →
       </button>
       <div id="send-fb" style="margin-top:1rem;font-size:0.9rem;padding:0.75rem 1rem;border-radius:4px;display:none;font-style:italic;"></div>
-      <div style="margin-top:1rem;font-size:0.8rem;color:var(--muted);font-style:italic;">
-        Результаты придут на: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="daaabba9b2bb85acb3bba8bfb4b3b9b29ab7bbb3b6f4a8af">[email&#160;protected]</a>
-      </div>
+      <div style="margin-top:1rem;font-size:0.8rem;color:var(--muted);font-style:italic;">Результаты придут на: pasha_viarenich@mail.ru</div>
     </div>
   </div>
 </section>
 
-<footer>
-  Безличная форма &nbsp;·&nbsp; Польская грамматика &nbsp;·&nbsp; учиться было приятно
-</footer>
+<footer>Безличная форма · Польская грамматика · uczyło się z przyjemnością</footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ---- DATA ----
+<script>
 const conjData = [
-  ["mówić","mówi się","mówiło się","говорили / мовили"],
-  ["jeść","je się","jadło się","ели"],
-  ["pić","pije się","piło się","пили"],
-  ["chodzić","chodzi się","chodziło się","ходили"],
-  ["pisać","pisze się","pisało się","писали"],
-  ["czytać","czyta się","czytało się","читали"],
-  ["słuchać","słucha się","słuchało się","слушали"],
-  ["pracować","pracuje się","pracowało się","работали"],
-  ["stać","stoi się","stało się","стояли"],
-  ["płacić","płaci się","płaciło się","платили"],
-  ["kupować","kupuje się","kupowało się","покупали"],
-  ["gotować","gotuje się","gotowało się","готовили"],
-  ["śpiewać","śpiewa się","śpiewało się","пели"],
-  ["uczyć się","uczy się","uczyło się","учились"],
+  ["mówić","mówi się","mówiło się","говорили"],["jeść","je się","jadło się","ели"],
+  ["pić","pije się","piło się","пили"],["chodzić","chodzi się","chodziło się","ходили"],
+  ["pisać","pisze się","pisało się","писали"],["czytać","czyta się","czytało się","читали"],
+  ["słuchać","słucha się","słuchało się","слушали"],["pracować","pracuje się","pracowało się","работали"],
+  ["stać","stoi się","stało się","стояли"],["płacić","płaci się","płaciło się","платили"],
+  ["kupować","kupuje się","kupowało się","покупали"],["gotować","gotuje się","gotowało się","готовили"],
+  ["śpiewać","śpiewa się","śpiewało się","пели"],["uczyć się","uczy się","uczyło się","учились"],
   ["latać","lata się","latało się","летали"],
 ];
-
 const examples = [
-  {now:"Teraz płaci się kartą lub smartfonem.", then:"Dawniej <span>płaciło się</span> tylko gotówką w sklepach."},
-  {now:"Teraz zamawia się jedzenie przez aplikację.", then:"Kiedyś <span>gotowało się</span> w domu każdego dnia."},
-  {now:"Teraz pracuje się zdalnie z domu.", then:"W przeszłości <span>chodziło się</span> do biura pięć dni w tygodniu."},
-  {now:"Teraz słucha się muzyki przez streaming.", then:"Dawniej <span>kupowało się</span> płyty winylowe w sklepie."},
-  {now:"Teraz pisze się SMS-y i maile.", then:"Kiedyś <span>pisało się</span> listy ręcznie i czekało tygodniami."},
-  {now:"Teraz podróżuje się bez paszportu w UE.", then:"Wcześniej <span>pokazywało się</span> dokumenty na każdej granicy."},
+  {now:"Teraz płaci się kartą lub smartfonem.",then:"Dawniej <span>płaciło się</span> tylko gotówką w sklepach."},
+  {now:"Teraz zamawia się jedzenie przez aplikację.",then:"Kiedyś <span>gotowało się</span> w domu każdego dnia."},
+  {now:"Teraz pracuje się zdalnie z domu.",then:"W przeszłości <span>chodziło się</span> do biura pięć dni w tygodniu."},
+  {now:"Teraz słucha się muzyki przez streaming.",then:"Dawniej <span>kupowało się</span> płyty winylowe w sklepie."},
+  {now:"Teraz pisze się SMS-y i maile.",then:"Kiedyś <span>pisało się</span> listy ręcznie i czekało tygodniami."},
+  {now:"Teraz podróżuje się bez paszportu w UE.",then:"Wcześniej <span>pokazywało się</span> dokumenty na każdej granicy."},
 ];
-
 const quiz1 = [
-  {q:"W starych filmach ___ (palić) w restauracjach.", hint:"palić", keys:["paliło się"], ans:"W starych filmach paliło się w restauracjach."},
-  {q:"Na wsi ___ (wstawać) o świcie do pracy.", hint:"wstawać", keys:["wstawało się"], ans:"Na wsi wstawało się o świcie do pracy."},
-  {q:"Kiedyś ___ (słuchać) radia zamiast oglądać TV.", hint:"słuchać", keys:["słuchało się"], ans:"Kiedyś słuchało się radia zamiast oglądać TV."},
-  {q:"W szkole ___ (pisać) na tablicy kredą.", hint:"pisać", keys:["pisało się"], ans:"W szkole pisało się na tablicy kredą."},
-  {q:"Na targu ___ (kupować) świeże warzywa.", hint:"kupować", keys:["kupowało się"], ans:"Na targu kupowało się świeże warzywa."},
-  {q:"Po wojnie ___ (żyć) bardzo skromnie.", hint:"żyć", keys:["żyło się"], ans:"Po wojnie żyło się bardzo skromnie."},
-  {q:"Przed telefon. komórk. ___ (dzwonić) z budki.", hint:"dzwonić", keys:["dzwoniło się"], ans:"Przed telefonami komórk. dzwoniło się z budki."},
+  {q:"W starych filmach ___ (palić) w restauracjach.",hint:"palić",keys:["paliło się"],ans:"W starych filmach paliło się w restauracjach."},
+  {q:"Na wsi ___ (wstawać) o świcie do pracy.",hint:"wstawać",keys:["wstawało się"],ans:"Na wsi wstawało się o świcie do pracy."},
+  {q:"Kiedyś ___ (słuchać) radia zamiast oglądać TV.",hint:"słuchać",keys:["słuchało się"],ans:"Kiedyś słuchało się radia zamiast oglądać TV."},
+  {q:"W szkole ___ (pisać) na tablicy kredą.",hint:"pisać",keys:["pisało się"],ans:"W szkole pisało się na tablicy kredą."},
+  {q:"Na targu ___ (kupować) świeże warzywa.",hint:"kupować",keys:["kupowało się"],ans:"Na targu kupowało się świeże warzywa."},
+  {q:"Po wojnie ___ (żyć) bardzo skromnie.",hint:"żyć",keys:["żyło się"],ans:"Po wojnie żyło się bardzo skromnie."},
+  {q:"Przed telefon. komórk. ___ (dzwonić) z budki.",hint:"dzwonić",keys:["dzwoniło się"],ans:"Przed telefonami komórk. dzwoniło się z budki."},
 ];
-
 const quiz2 = [
-  {q:"Раньше читали газеты каждое утро.", hint:"czytać → czytało się", keys:["czytało się gazety","czytało się gazetę"], ans:"Dawniej czytało się gazety każdego ranka."},
-  {q:"В воскресенье ходили в церковь.", hint:"chodzić → chodziło się", keys:["chodziło się do kościoła"], ans:"W niedzielę chodziło się do kościoła."},
-  {q:"На рынке покупали свежие овощи.", hint:"kupować → kupowało się", keys:["kupowało się warzywa","kupowało się świeże"], ans:"Na targu kupowało się świeże warzywa."},
-  {q:"Вечером пели песни у костра.", hint:"śpiewać → śpiewało się", keys:["śpiewało się piosenki","śpiewało się przy ognisku"], ans:"Wieczorem śpiewało się piosenki przy ognisku."},
-  {q:"В школе говорили только по-польски.", hint:"mówić → mówiło się", keys:["mówiło się po polsku","mówiło się tylko"], ans:"W szkole mówiło się tylko po polsku."},
-  {q:"На вокзале стояли в очередях.", hint:"stać → stało się", keys:["stało się w kolejkach","stało się na stacji"], ans:"Na dworcu stało się w długich kolejkach."},
+  {q:"Раньше читали газеты каждое утро.",hint:"czytać → czytało się",keys:["czytało się gazety","czytało się gazetę"],ans:"Dawniej czytało się gazety każdego ranka."},
+  {q:"В воскресенье ходили в церковь.",hint:"chodzić → chodziło się",keys:["chodziło się do kościoła"],ans:"W niedzielę chodziło się do kościoła."},
+  {q:"На рынке покупали свежие овощи.",hint:"kupować → kupowało się",keys:["kupowało się warzywa","kupowało się świeże"],ans:"Na targu kupowało się świeże warzywa."},
+  {q:"Вечером пели песни у костра.",hint:"śpiewać → śpiewało się",keys:["śpiewało się piosenki","śpiewało się przy ognisku"],ans:"Wieczorem śpiewało się piosenki przy ognisku."},
+  {q:"В школе говорили только по-польски.",hint:"mówić → mówiło się",keys:["mówiło się po polsku","mówiło się tylko"],ans:"W szkole mówiło się tylko po polsku."},
+  {q:"На вокзале стояли в очередях.",hint:"stać → stało się",keys:["stało się w kolejkach"],ans:"Na dworcu stało się w długich kolejkach."},
 ];
-
 const quiz3 = [
-  {ctx:"Jest rok 2050. Wszyscy pracują przez telepatię — klawiatur nie ma.", q:"W roku 2020...", hint:"pisać", keys:["pisało się na klawiaturze","pisało się na komputerze"], ans:"W roku 2020 pisało się na klawiaturze."},
-  {ctx:"Jest rok 2050. Jedzenie drukuje drukarka 3D.", q:"W roku 2020...", hint:"gotować", keys:["gotowało się w domu","gotowało się samemu"], ans:"W roku 2020 gotowało się w domu samemu."},
-  {ctx:"Jest rok 2050. Lotniska nie istnieją — są teleportery.", q:"W roku 2020...", hint:"latać samolotem", keys:["latało się samolotem","latało się samolotami"], ans:"W roku 2020 latało się samolotem."},
-  {ctx:"Jest rok 2050. Muzyka tworzy AI — nikt nie gra.", q:"W roku 2020...", hint:"słuchać muzyki na żywo", keys:["słuchało się muzyki","słuchało się na żywo"], ans:"W roku 2020 słuchało się muzyki na żywo."},
-  {ctx:"Jest rok 2050. Granice zniknęły — paszporty to muzeum.", q:"W roku 2020...", hint:"pokazywać paszport", keys:["pokazywało się paszport","sprawdzało się dokumenty"], ans:"W roku 2020 pokazywało się paszport na granicy."},
-  {ctx:"Jest rok 2050. Gotówka to zabytek historyczny.", q:"W roku 2020...", hint:"płacić gotówką", keys:["płaciło się gotówką","płaciło się cash"], ans:"W roku 2020 płaciło się gotówką w sklepach."},
+  {ctx:"Jest rok 2050. Wszyscy pracują przez telepatię.",q:"W roku 2020...",hint:"pisać",keys:["pisało się na klawiaturze","pisało się na komputerze"],ans:"W roku 2020 pisało się na klawiaturze."},
+  {ctx:"Jest rok 2050. Jedzenie drukuje drukarka 3D.",q:"W roku 2020...",hint:"gotować",keys:["gotowało się w domu","gotowało się samemu"],ans:"W roku 2020 gotowało się w domu samemu."},
+  {ctx:"Jest rok 2050. Lotniska nie istnieją — są teleportery.",q:"W roku 2020...",hint:"latać samolotem",keys:["latało się samolotem"],ans:"W roku 2020 latało się samolotem."},
+  {ctx:"Jest rok 2050. Muzyka tworzy AI — nikt nie gra.",q:"W roku 2020...",hint:"słuchać muzyki na żywo",keys:["słuchało się muzyki","słuchało się na żywo"],ans:"W roku 2020 słuchało się muzyki na żywo."},
+  {ctx:"Jest rok 2050. Granice zniknęły — paszporty to muzeum.",q:"W roku 2020...",hint:"pokazywać paszport",keys:["pokazywało się paszport","sprawdzało się dokumenty"],ans:"W roku 2020 pokazywało się paszport na granicy."},
+  {ctx:"Jest rok 2050. Gotówka to zabytek historyczny.",q:"W roku 2020...",hint:"płacić gotówką",keys:["płaciło się gotówką"],ans:"W roku 2020 płaciło się gotówką w sklepach."},
 ];
+const allQuizzes=[quiz1,quiz2,quiz3];
+let scores=[0,0,0];
+let answered=[new Array(7).fill(false),new Array(6).fill(false),new Array(6).fill(false)];
 
-const allQuizzes = [quiz1, quiz2, quiz3];
-let scores = [0,0,0];
-let answered = [
-  new Array(quiz1.length).fill(false),
-  new Array(quiz2.length).fill(false),
-  new Array(quiz3.length).fill(false),
-];
-
-// ---- RENDER TABLE ----
-function renderTable() {
-  const tbody = document.getElementById("conj-body");
-  tbody.innerHTML = conjData.map(([inf,pres,past,meaning]) => `
-    <tr>
-      <td class="inf">${inf}</td>
-      <td class="pres">${pres}</td>
-      <td class="past">${past}</td>
-      <td class="meaning">${meaning}</td>
-    </tr>
-  `).join("");
+function renderTable(){
+  document.getElementById("conj-body").innerHTML=conjData.map(([i,p,pa,m])=>`<tr><td class="inf">${i}</td><td class="pres">${p}</td><td class="past">${pa}</td><td class="meaning">${m}</td></tr>`).join("");
 }
-
-// ---- RENDER EXAMPLES ----
-function renderExamples() {
-  document.getElementById("example-list").innerHTML = examples.map(e => `
-    <div class="example-card">
-      <div>
-        <div class="ex-divider">Сейчас</div>
-        <div class="ex-now">${e.now}</div>
-      </div>
-      <div>
-        <div class="ex-divider">Раньше</div>
-        <div class="ex-then">${e.then}</div>
-      </div>
-    </div>
-  `).join("");
+function renderExamples(){
+  document.getElementById("example-list").innerHTML=examples.map(e=>`<div class="example-card"><div><div class="ex-divider">Сейчас</div><div class="ex-now">${e.now}</div></div><div><div class="ex-divider">Раньше</div><div class="ex-then">${e.then}</div></div></div>`).join("");
 }
-
-// ---- RENDER QUIZ ----
-function renderQuiz(n) {
-  const data = allQuizzes[n];
-  const container = document.getElementById("q"+(n+1));
-  container.innerHTML = data.map((item,i) => `
+function renderQuiz(n){
+  const data=allQuizzes[n];
+  document.getElementById("q"+(n+1)).innerHTML=data.map((item,i)=>`
     <div class="quiz-card" id="qc${n}_${i}">
       <div class="quiz-num">${String(i+1).padStart(2,"0")} / ${String(data.length).padStart(2,"0")}</div>
-      ${item.ctx ? `<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.4rem;font-style:italic">${item.ctx}</div>` : ""}
+      ${item.ctx?`<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.4rem;font-style:italic">${item.ctx}</div>`:""}
       <div class="quiz-q">${item.q}</div>
       <div class="quiz-hint">${item.hint}</div>
       <div class="quiz-input-row">
@@ -836,144 +328,88 @@ function renderQuiz(n) {
         <button class="quiz-btn" onclick="checkQ(${n},${i})">Проверить</button>
       </div>
       <div class="quiz-fb" id="qf${n}_${i}"></div>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
-
-function norm(s){ return s.toLowerCase().trim().replace(/[.,!?]/g,"").replace(/\s+/g," "); }
-
-function checkQ(n, i) {
-  if (answered[n][i]) return;
-  const inp = document.getElementById("qi"+n+"_"+i);
-  const fb  = document.getElementById("qf"+n+"_"+i);
-  const card = document.getElementById("qc"+n+"_"+i);
-  const val = norm(inp.value);
-  if (val.length < 4) { fb.textContent="Введи ответ!"; fb.className="quiz-fb no"; return; }
-  const ok = allQuizzes[n][i].keys.some(k => val.includes(norm(k)));
-  answered[n][i] = true;
-  inp.disabled = true;
-  if (ok) {
-    scores[n]++;
-    fb.textContent = "Верно! Отлично.";
-    fb.className = "quiz-fb ok";
-    card.classList.add("correct");
-  } else {
-    fb.innerHTML = `Не совсем точно. Пример: <em>${allQuizzes[n][i].ans}</em>`;
-    fb.className = "quiz-fb no";
-    card.classList.add("wrong");
-  }
-  document.getElementById("s"+(n+1)).textContent = scores[n] + " / " + allQuizzes[n].length;
+function norm(s){return s.toLowerCase().trim().replace(/[.,!?]/g,"").replace(/\s+/g," ");}
+function checkQ(n,i){
+  if(answered[n][i])return;
+  const inp=document.getElementById("qi"+n+"_"+i);
+  const fb=document.getElementById("qf"+n+"_"+i);
+  const card=document.getElementById("qc"+n+"_"+i);
+  const val=norm(inp.value);
+  if(val.length<4){fb.textContent="Введи ответ!";fb.className="quiz-fb no";return;}
+  const ok=allQuizzes[n][i].keys.some(k=>val.includes(norm(k)));
+  answered[n][i]=true; inp.disabled=true;
+  if(ok){scores[n]++;fb.textContent="Верно! Отлично.";fb.className="quiz-fb ok";card.classList.add("correct");}
+  else{fb.innerHTML=`Не совсем точно. Пример: <em>${allQuizzes[n][i].ans}</em>`;fb.className="quiz-fb no";card.classList.add("wrong");}
+  document.getElementById("s"+(n+1)).textContent=scores[n]+" / "+allQuizzes[n].length;
   updateScoreDisplay();
 }
-
-function resetQuiz(n) {
-  const idx = n-1;
-  scores[idx] = 0;
-  answered[idx] = new Array(allQuizzes[idx].length).fill(false);
-  document.getElementById("s"+n).textContent = "0 / " + allQuizzes[idx].length;
+function resetQuiz(n){
+  const idx=n-1; scores[idx]=0;
+  answered[idx]=new Array(allQuizzes[idx].length).fill(false);
+  document.getElementById("s"+n).textContent="0 / "+allQuizzes[idx].length;
   renderQuiz(idx);
 }
-
-// ---- TABS ----
-function switchTab(id, btn) {
-  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
+function switchTab(id,btn){
+  document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active"); btn.classList.add("active");
 }
-
-// ---- SCROLL REVEAL ----
-function initReveal() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add("visible"); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible");}),{threshold:0.12});
+  document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
 }
-
-// ---- ACTIVE NAV ----
-function initNav() {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-link");
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navLinks.forEach(l => l.classList.remove("active"));
-        const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
-        if (link) link.classList.add("active");
-      }
-    });
-  }, { threshold: 0.4 });
-  sections.forEach(s => observer.observe(s));
+function initNav(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll(".nav-link").forEach(l=>l.classList.remove("active"));
+      const link=document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if(link)link.classList.add("active");
+    }
+  }),{threshold:0.4});
+  document.querySelectorAll("section[id]").forEach(s=>obs.observe(s));
 }
-
-// ---- SEND RESULTS ----
-function updateScoreDisplay() {
-  const total = scores[0] + scores[1] + scores[2];
-  const max = allQuizzes[0].length + allQuizzes[1].length + allQuizzes[2].length;
-  document.getElementById("disp-s1").textContent = scores[0] + " / " + allQuizzes[0].length;
-  document.getElementById("disp-s2").textContent = scores[1] + " / " + allQuizzes[1].length;
-  document.getElementById("disp-s3").textContent = scores[2] + " / " + allQuizzes[2].length;
-  document.getElementById("disp-total").textContent = total + " / " + max;
+function updateScoreDisplay(){
+  const total=scores[0]+scores[1]+scores[2];
+  const max=allQuizzes[0].length+allQuizzes[1].length+allQuizzes[2].length;
+  document.getElementById("disp-s1").textContent=scores[0]+" / "+allQuizzes[0].length;
+  document.getElementById("disp-s2").textContent=scores[1]+" / "+allQuizzes[1].length;
+  document.getElementById("disp-s3").textContent=scores[2]+" / "+allQuizzes[2].length;
+  document.getElementById("disp-total").textContent=total+" / "+max;
 }
-
-function buildAnswerText() {
-  let lines = [];
-  const labels = ["Упражнение 1 — Вставь форму", "Упражнение 2 — Переведи", "Упражнение 3 — 2050→2020"];
-  allQuizzes.forEach((quiz, n) => {
-    lines.push("\n" + labels[n] + " (" + scores[n] + "/" + quiz.length + ")");
-    quiz.forEach((item, i) => {
-      const inp = document.getElementById("qi"+n+"_"+i);
-      const val = inp ? inp.value.trim() : "—";
-      const ok = answered[n][i] && allQuizzes[n][i].keys.some(k => norm(val).includes(norm(k)));
-      lines.push((ok ? "✓" : "✗") + " " + (i+1) + ". " + val + (ok ? "" : "  (пример: " + item.ans + ")"));
+function buildAnswerText(){
+  let lines=[];
+  const labels=["Упражнение 1 — Вставь форму","Упражнение 2 — Переведи","Упражнение 3 — 2050→2020"];
+  allQuizzes.forEach((quiz,n)=>{
+    lines.push("\n"+labels[n]+" ("+scores[n]+"/"+quiz.length+")");
+    quiz.forEach((item,i)=>{
+      const inp=document.getElementById("qi"+n+"_"+i);
+      const val=inp?inp.value.trim():"—";
+      const ok=answered[n][i]&&allQuizzes[n][i].keys.some(k=>norm(val).includes(norm(k)));
+      lines.push((ok?"✓":"✗")+" "+(i+1)+". "+val+(ok?"":" (пример: "+item.ans+")"));
     });
   });
   return lines.join("\n");
 }
-
-async function sendResults() {
-  const name = document.getElementById("student-name").value.trim();
-  const email = document.getElementById("student-email").value.trim();
-  const fb = document.getElementById("send-fb");
-  const btn = document.getElementById("send-btn");
-
-  if (!name) {
-    fb.textContent = "Пожалуйста, введи своё имя.";
-    fb.style.background = "rgba(192,57,43,0.15)";
-    fb.style.color = "#e07070";
-    fb.style.display = "block";
-    return;
-  }
-
-  const total = scores[0] + scores[1] + scores[2];
-  const max = allQuizzes[0].length + allQuizzes[1].length + allQuizzes[2].length;
-  const pct = Math.round(total / max * 100);
-
-  const body = {
-    "Ученик": name,
-    "Email ученика": email || "не указан",
-    "Результат": total + " / " + max + " (" + pct + "%)",
-    "Дата": new Date().toLocaleString("ru-RU"),
-    "Ответы": buildAnswerText()
-  };
-
-  btn.textContent = "Отправляем...";
-  btn.style.opacity = "0.6";
-  btn.disabled = true;
-
-  try {
-    const res = await fetch("https://formspree.io/f/mgonjpgb", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({ ...body, _subject: "Результат теста — " + name })
-    });
-    if (res.ok) {
-      fb.textContent = "Готово! Результаты отправлены учителю.";
-      fb.style.background = "rgba(46,125,82,0.15)";
-      fb.style.color = "#6fcf97";
-      btn.textContent = "Отправлено ✓";
-    } else {
-      throw new Error("error");
-    }
-  } catch(e) {
-    fb.textContent = "О
+async function sendResults(){
+  const name=document.getElementById("student-name").value.trim();
+  const email=document.getElementById("student-email").value.trim();
+  const fb=document.getElementById("send-fb");
+  const btn=document.getElementById("send-btn");
+  if(!name){fb.textContent="Пожалуйста, введи своё имя.";fb.style.cssText="background:rgba(192,57,43,0.15);color:#e07070;display:block;margin-top:1rem;padding:0.75rem;border-radius:4px;font-size:0.9rem;";return;}
+  const total=scores[0]+scores[1]+scores[2];
+  const max=allQuizzes[0].length+allQuizzes[1].length+allQuizzes[2].length;
+  const pct=Math.round(total/max*100);
+  const body={"Ученик":name,"Email ученика":email||"не указан","Результат":total+" / "+max+" ("+pct+"%)","Дата":new Date().toLocaleString("ru-RU"),"Ответы":buildAnswerText(),"_subject":"Результат теста — "+name};
+  btn.textContent="Отправляем..."; btn.style.opacity="0.6"; btn.disabled=true;
+  try{
+    const res=await fetch("https://formspree.io/f/mgonjpgb",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(body)});
+    if(res.ok){fb.textContent="Готово! Результаты отправлены учителю.";fb.style.cssText="background:rgba(46,125,82,0.15);color:#6fcf97;display:block;margin-top:1rem;padding:0.75rem;border-radius:4px;font-size:0.9rem;";btn.textContent="Отправлено ✓";}
+    else throw new Error();
+  }catch(e){fb.textContent="Ошибка отправки. Попробуй ещё раз.";fb.style.cssText="background:rgba(192,57,43,0.15);color:#e07070;display:block;margin-top:1rem;padding:0.75rem;border-radius:4px;font-size:0.9rem;";btn.textContent="Отправить результаты учителю →";btn.style.opacity="1";btn.disabled=false;}
+}
+renderTable(); renderExamples(); renderQuiz(0); renderQuiz(1); renderQuiz(2); initReveal(); initNav();
+</script>
+</body>
+</html>
